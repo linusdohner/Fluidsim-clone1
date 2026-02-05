@@ -45,3 +45,36 @@ npm run tauri dev
 - Vite + React + TypeScript Frontend
 - Tauri v2 Backend mit Beispiel-Command `ping`
 - Saubere Grundstruktur für nächste Milestones
+
+## Demo-Projekte laden
+
+Im Ordner `demo/` liegen drei Beispielprojekte im aktuellen Schema (`schemaVersion: 1`):
+
+- `demo/demo_pneumatic_basic.json`
+- `demo/demo_hydraulic_basic.json`
+- `demo/demo_electric_basic.json`
+
+### Variante A: Browser-Dev-Modus (`npm run dev`)
+
+Die Web-Variante lädt/speichert Projekte über `localStorage` unter dem Dateinamen als Key.
+
+1. Dateiinhalt einer Demo-JSON öffnen und komplett kopieren.
+2. App im Browser starten.
+3. Browser-DevTools öffnen und unter **Console** ausführen (Beispiel für Pneumatik):
+
+```js
+localStorage.setItem('demo_pneumatic_basic.json', `...hier den JSON-Inhalt einfügen...`)
+```
+
+4. In der App auf **Open** klicken.
+5. Als Dateiname z. B. `demo_pneumatic_basic.json` eingeben.
+
+### Variante B: Tauri-Desktop (`npm run tauri dev`)
+
+Die Desktop-Variante liest Dateien aus dem Tauri-`appDataDir`.
+
+1. Gewünschte Demo-Datei aus `demo/` in das AppData-Verzeichnis der Anwendung kopieren.
+2. In der App **Open** klicken.
+3. Den kopierten Dateinamen eingeben (z. B. `demo_hydraulic_basic.json`).
+
+> Hinweis: Die Demos enthalten absichtlich einfache/teilweise nicht in der Bibliothek hinterlegte Typnamen, sind aber für das Projekt-Schema korrekt serialisiert und damit ladbar.
