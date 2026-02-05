@@ -7,6 +7,10 @@ interface CanvasEditorProps {
   components: ComponentInstance[]
   selectedIds: string[]
   placingType: string | null
+  focusRequest?: {
+    componentId: string
+    token: number
+  }
   onSelect: (id: string, additive: boolean) => void
   onClearSelection: () => void
   onMoveComponent: (id: string, x: number, y: number) => void
@@ -22,6 +26,7 @@ export function CanvasEditor({
   components,
   selectedIds,
   placingType,
+  focusRequest,
   onSelect,
   onClearSelection,
   onMoveComponent,
@@ -51,6 +56,27 @@ export function CanvasEditor({
     observer.observe(containerRef.current)
     return () => observer.disconnect()
   }, [])
+
+  useEffect(() => {
+    if (!focusRequest) {
+      return
+    }
+
+    const target = components.find((component) => component.id === focusRequest.componentId)
+    if (!target) {
+      return
+    }
+
+    const nextScale = Math.max(stageScale, 1.4)
+    const targetCenterX = target.transform.x + SHAPE_SIZE.width / 2
+    const targetCenterY = target.transform.y + SHAPE_SIZE.height / 2
+
+    setStageScale(nextScale)
+    setStagePosition({
+      x: stageSize.width / 2 - targetCenterX * nextScale,
+      y: stageSize.height / 2 - targetCenterY * nextScale,
+    })
+  }, [components, focusRequest, stageScale, stageSize.height, stageSize.width])
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {

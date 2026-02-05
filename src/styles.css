@@ -69,6 +69,13 @@ body {
   min-height: 0;
 }
 
+.right-sidebar {
+  display: grid;
+  gap: 1rem;
+  min-height: 0;
+  grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
+}
+
 .panel,
 .canvas-editor {
   border: 1px solid #30363d;
@@ -165,6 +172,32 @@ body {
   gap: 0.5rem;
 }
 
+.diagnostics-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.5rem;
+  overflow: auto;
+}
+
+.diagnostics-item-button {
+  width: 100%;
+  display: grid;
+  gap: 0.25rem;
+  text-align: left;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  padding: 0.55rem 0.65rem;
+  background: #0d1117;
+  color: #c9d1d9;
+  cursor: pointer;
+}
+
+.diagnostics-item-button:hover {
+  border-color: #58a6ff;
+}
+
 .status-bar {
   display: flex;
   justify-content: space-between;
@@ -181,7 +214,7 @@ body {
     grid-template-columns: 220px 1fr;
     grid-template-areas:
       'library canvas'
-      'properties properties';
+      'sidebar sidebar';
   }
 
   .panel-library {
@@ -192,8 +225,10 @@ body {
     grid-area: canvas;
   }
 
-  .panel-properties {
-    grid-area: properties;
+  .right-sidebar {
+    grid-area: sidebar;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
   }
 }
 
@@ -203,7 +238,11 @@ body {
     grid-template-areas:
       'library'
       'canvas'
-      'properties';
+      'sidebar';
+  }
+
+  .right-sidebar {
+    grid-template-columns: 1fr;
   }
 
   .status-bar {
