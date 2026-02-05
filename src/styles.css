@@ -35,6 +35,12 @@ body {
   background: #161b22;
 }
 
+.toolbar-group {
+  display: inline-flex;
+  gap: 0.5rem;
+  margin-right: 0.5rem;
+}
+
 .toolbar-button {
   border: 1px solid #30363d;
   background: #21262d;
