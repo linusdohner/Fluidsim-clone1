@@ -1,13 +1,13 @@
 # Fluidsim Clone (M0 Bootstrap)
 
-Grundgerüst für eine Desktop-Anwendung mit **Tauri + React + TypeScript + Vite**.
+Lauffähiges Grundgerüst für eine Desktop-Anwendung mit **Tauri + React + TypeScript + Vite**.
 
 ## Voraussetzungen (Windows)
 
 1. **Node.js LTS** (inkl. npm)
-2. **Rust Toolchain**
-3. **Visual Studio C++ Build Tools** (MSVC)
-4. **WebView2 Runtime**
+2. **Rust Toolchain** (`rustup` + `cargo`)
+3. **Visual Studio 2022 Build Tools** (Desktop development with C++)
+4. **Microsoft Edge WebView2 Runtime**
 
 ## Projektstruktur
 
@@ -25,21 +25,23 @@ Grundgerüst für eine Desktop-Anwendung mit **Tauri + React + TypeScript + Vite
 
 ## Exakte Run-Kommandos (Windows)
 
-> Die Kommandos können in **PowerShell** oder **Windows Terminal** ausgeführt werden.
+> Die Kommandos in einem Terminal im Projektordner ausführen (PowerShell oder Windows Terminal).
 
 ```powershell
+cd C:\Pfad\zu\Fluidsim-clone1
 npm install
 npm run dev
 ```
 
-In einem zweiten Terminal:
+> Für die Desktop-App ein zweites Terminal im selben Projektordner öffnen:
 
 ```powershell
+cd C:\Pfad\zu\Fluidsim-clone1
 npm run tauri dev
 ```
 
-## Was ist enthalten?
+## Enthalten
 
 - Vite + React + TypeScript Frontend
 - Tauri v2 Backend mit Beispiel-Command `ping`
-- Grundlegende Ordnerstruktur für die nächsten Milestones
+- Saubere Grundstruktur für nächste Milestones
