@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "project": {
+    "metadata": {
+      "name": "Demo Hydraulic Basic",
+      "domain": "hydraulic",
+      "description": "Basis-Demo mit hydraulischen Komponenten"
+    },
+    "version": "1.0.0",
+    "diagram": {
+      "components": [
+        {
+          "id": "h-pump-1",
+          "type": "HydraulicPump",
+          "label": "Pump",
+          "transform": {
+            "x": -180,
+            "y": 80,
+            "rot": 0,
+            "flipH": false,
+            "flipV": false
+          },
+          "parameterValues": {
+            "pressureBar": 80
+          }
+        },
+        {
+          "id": "h-valve-1",
+          "type": "HydraulicValve",
+          "label": "Valve",
+          "transform": {
+            "x": 20,
+            "y": 80,
+            "rot": 0,
+            "flipH": false,
+            "flipV": false
+          },
+          "parameterValues": {
+            "state": "neutral"
+          }
+        },
+        {
+          "id": "h-cylinder-1",
+          "type": "HydraulicCylinder",
+          "label": "Cylinder",
+          "transform": {
+            "x": 220,
+            "y": 80,
+            "rot": 0,
+            "flipH": false,
+            "flipV": false
+          },
+          "parameterValues": {
+            "strokeMm": 100
+          }
+        }
+      ],
+      "connections": []
+    }
+  }
+}

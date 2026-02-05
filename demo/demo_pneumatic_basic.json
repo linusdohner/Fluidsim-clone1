@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "project": {
+    "metadata": {
+      "name": "Demo Pneumatic Basic",
+      "domain": "pneumatic",
+      "description": "Basis-Demo mit Dummy-Pneumatik-Komponenten"
+    },
+    "version": "1.0.0",
+    "diagram": {
+      "components": [
+        {
+          "id": "p-dummy-source-1",
+          "type": "DummyPneumaticSource",
+          "label": "Dummy Source",
+          "transform": {
+            "x": -220,
+            "y": -40,
+            "rot": 0,
+            "flipH": false,
+            "flipV": false
+          },
+          "parameterValues": {
+            "note": "dummy"
+          }
+        },
+        {
+          "id": "p-dummy-valve-1",
+          "type": "DummyPneumaticValve",
+          "label": "Dummy Valve",
+          "transform": {
+            "x": 0,
+            "y": -40,
+            "rot": 0,
+            "flipH": false,
+            "flipV": false
+          },
+          "parameterValues": {
+            "note": "dummy"
+          }
+        },
+        {
+          "id": "p-dummy-actuator-1",
+          "type": "DummyPneumaticActuator",
+          "label": "Dummy Actuator",
+          "transform": {
+            "x": 220,
+            "y": -40,
+            "rot": 0,
+            "flipH": false,
+            "flipV": false
+          },
+          "parameterValues": {
+            "note": "dummy"
+          }
+        }
+      ],
+      "connections": []
+    }
+  }
+}
