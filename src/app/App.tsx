@@ -5,8 +5,15 @@ import {
   DeleteComponentCommand,
   MoveComponentCommand,
 } from '../commands'
-import { createEmptyProject, type ComponentInstance, type Project } from '../domain'
+import {
+  createEmptyProject,
+  type ComponentDefinition,
+  type ComponentInstance,
+  type Project,
+  validateProject,
+} from '../domain'
 import { CanvasEditor } from '../layout/CanvasEditor'
+import { DiagnosticsPanel, type DiagnosticItem } from '../layout/DiagnosticsPanel'
 import { LibraryPanel } from '../layout/LibraryPanel'
 import { PropertiesPanel } from '../layout/PropertiesPanel'
 import { StatusBar } from '../layout/StatusBar'
@@ -46,12 +53,47 @@ const INITIAL_PROJECT: Project = {
 
 const DEFAULT_FILE_NAME = 'project.json'
 
+const COMPONENT_DEFINITIONS: ComponentDefinition[] = [
+  {
+    type: 'Valve',
+    displayName: 'Valve',
+    categoryPath: ['Pneumatics'],
+    ports: [
+      { id: 'in', name: 'In', kind: 'fluid', positionLocal: { x: 0, y: 35 }, direction: 'in', domain: 'pneumatic' },
+      {
+        id: 'out',
+        name: 'Out',
+        kind: 'fluid',
+        positionLocal: { x: 150, y: 35 },
+        direction: 'out',
+        domain: 'pneumatic',
+      },
+    ],
+    parameterSchema: {},
+  },
+  {
+    type: 'Cylinder',
+    displayName: 'Cylinder',
+    categoryPath: ['Pneumatics'],
+    ports: [
+      { id: 'in', name: 'In', kind: 'fluid', positionLocal: { x: 0, y: 35 }, direction: 'in', domain: 'pneumatic' },
+    ],
+    parameterSchema: {},
+  },
+]
+
+const extractComponentIdFromReference = (reference: string): string | undefined => {
+  const match = reference.match(/^connection:[^:]+:(?:from|to)\.component:([^:]+)$/)
+  return match?.[1]
+}
+
 export function App() {
   const [project, setProject] = useState<Project>(INITIAL_PROJECT)
   const [selectedIds, setSelectedIds] = useState<string[]>([])
   const [placingType, setPlacingType] = useState<string | null>(null)
   const [currentFileName, setCurrentFileName] = useState<string>(DEFAULT_FILE_NAME)
   const [isDirty, setIsDirty] = useState(false)
+  const [focusRequest, setFocusRequest] = useState<{ componentId: string; token: number }>()
   const [, forceHistoryTick] = useReducer((value: number) => value + 1, 0)
   const commandStackRef = useRef(new CommandStack<Project>())
 
@@ -61,6 +103,30 @@ export function App() {
     () => components.filter((component) => selectedIds.includes(component.id)),
     [components, selectedIds],
   )
+
+  const diagnostics = useMemo<DiagnosticItem[]>(() => {
+    const validation = validateProject(project, COMPONENT_DEFINITIONS)
+
+    return [
+      ...validation.unconnectedPorts.map((issue) => ({
+        id: `unconnected:${issue.componentId}:${issue.portId}`,
+        category: 'unconnected-port' as const,
+        componentId: issue.componentId,
+        message: `Component "${issue.componentId}" port "${issue.portId}" is not connected.`,
+      })),
+      ...validation.invalidReferences.map((reference, index) => ({
+        id: `invalid:${index}:${reference}`,
+        category: 'invalid-reference' as const,
+        componentId: extractComponentIdFromReference(reference),
+        message: reference,
+      })),
+      ...validation.duplicateIds.map((duplicateId, index) => ({
+        id: `duplicate:${index}:${duplicateId}`,
+        category: 'duplicate-id' as const,
+        message: duplicateId,
+      })),
+    ]
+  }, [project])
 
   const executeCommand = (command: AddComponentCommand | MoveComponentCommand | DeleteComponentCommand) => {
     setProject((current) => commandStackRef.current.execute(command, current))
@@ -205,6 +271,7 @@ export function App() {
           components={components}
           selectedIds={selectedIds}
           placingType={placingType}
+          focusRequest={focusRequest}
           onSelect={(id, additive) => {
             setSelectedIds((current) => {
               if (!additive) {
@@ -242,12 +309,25 @@ export function App() {
             setPlacingType(null)
           }}
         />
-        <PropertiesPanel selectedComponents={selectedComponents} />
+        <div className="right-sidebar">
+          <DiagnosticsPanel
+            diagnostics={diagnostics}
+            onFocusDiagnostic={(diagnostic) => {
+              if (!diagnostic.componentId) {
+                return
+              }
+
+              setSelectedIds([diagnostic.componentId])
+              setFocusRequest({ componentId: diagnostic.componentId, token: Date.now() })
+            }}
+          />
+          <PropertiesPanel selectedComponents={selectedComponents} />
+        </div>
       </div>
       <StatusBar
         cursor="(Canvas active)"
         zoom="Mousewheel"
-        diagnosticsCount={placingType ? 1 : 0}
+        diagnosticsCount={diagnostics.length}
         currentFileName={currentFileName}
         isDirty={isDirty}
       />
