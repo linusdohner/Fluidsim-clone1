@@ -1,7 +1,5 @@
-# Roadmap
-
-- [ ] M1
-- [ ] M2
-- [ ] M3
-- [ ] M4
-- [ ] M5
+- [ ] M1: Editor + Speichern/Laden + Library (ohne echten Solver, nur dummy state)
+- [ ] M2: Pneumatik-Solver (vereinfachtes Modell) + Visualisierung
+- [ ] M3: Hydraulik-Solver + Messgeräte/Plots
+- [ ] M4: Elektro/Digital + Kopplung (Spule steuert Ventil)
+- [ ] M5: GRAFCET + Projekt-Import/Export + Teileliste
